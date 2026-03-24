@@ -5,7 +5,6 @@ import 'package:smart_threads/data/datasourses/local_post_datasource.dart';
 import 'package:smart_threads/data/models/post_model.dart';
 import 'package:smart_threads/data/respositories/post_repository_impl.dart';
 import 'package:smart_threads/domain/entities/post.dart';
-import 'package:smart_threads/domain/repositories/post_repository.dart';
 import 'package:smart_threads/presentation/bloc/feed_cubit/feed_cubit.dart';
 import 'package:smart_threads/presentation/screens/feed_screen.dart';
 
@@ -23,7 +22,9 @@ Future<void> main() async {
 
 Future<void> _seedIfEmpty() async {
   final box = await Hive.openBox<PostModel>('posts');
-  if (box.isNotEmpty) return;
+  print('object');
+ // if (box.isNotEmpty) return;
+  print('object1');
 
   final posts = [
     Post(
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
     final repository = PostRepositoryImpl(local);
 
     return BlocProvider(
-      create: (context) => FeedCubit(repository),
+      create: (context) => FeedCubit(repository)..loadFeed(),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
