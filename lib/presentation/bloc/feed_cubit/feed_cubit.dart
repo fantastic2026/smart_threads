@@ -4,15 +4,15 @@ import 'package:smart_threads/domain/repositories/post_repository.dart';
 import 'package:smart_threads/presentation/bloc/feed_cubit/feed_state.dart';
 
 class FeedCubit extends Cubit<FeedState> {
-  final PostRepository _repository;
+  final PostRepository repository;
 
-  FeedCubit(this._repository) : super(const FeedState());
+  FeedCubit(this.repository) : super(const FeedState());
 
   Future<void> loadFeed() async {
     emit(state.copyWith(status: FeedStatus.loading, errorMessage: null));
 
     try {
-      final posts = await _repository.getFeed();
+      final posts = await repository.getFeed();
       emit(state.copyWith(status: FeedStatus.success, posts: posts));
     } catch (e) {
       emit(state.copyWith(errorMessage: 'Ошибка', status: FeedStatus.failure));
@@ -28,7 +28,7 @@ class FeedCubit extends Cubit<FeedState> {
       likes: 0,
     );
 
-    await _repository.createPost(newPost);
+    await repository.createPost(newPost);
 
     await loadFeed();
   }
@@ -44,7 +44,7 @@ class FeedCubit extends Cubit<FeedState> {
     }).toList();
 
     try {
-      await _repository.likePost(postId);
+      await repository.likePost(postId);
       emit(state.copyWith(posts: updatedPosts));
     } catch (e) {
       await loadFeed();

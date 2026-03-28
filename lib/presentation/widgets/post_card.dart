@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_threads/domain/entities/post.dart';
+import 'package:smart_threads/presentation/widgets/like_button.dart';
 
 class PostCard extends StatelessWidget {
   const PostCard({super.key, required this.post});
@@ -28,7 +29,7 @@ class PostCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    const Icon(Icons.favorite_border, size: 20),
+                    LikeButton(post: post),
                     const SizedBox(width: 20),
                     const Icon(Icons.mode_comment_outlined, size: 20),
                     const SizedBox(width: 20),

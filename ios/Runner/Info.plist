@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Нужна камера для фото к посту</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Нужен доступ к галерее для фото к посту</string>
 </dict>
 </plist>

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_threads/presentation/bloc/create_post/create_post_cubit.dart';
 import 'package:smart_threads/presentation/bloc/feed_cubit/feed_cubit.dart';
 import 'package:smart_threads/presentation/bloc/feed_cubit/feed_state.dart';
 import 'package:smart_threads/presentation/screens/create_post_screen.dart';
@@ -25,7 +26,11 @@ class FeedScreen extends StatelessWidget {
                   builder: (_) {
                     return BlocProvider.value(
                       value: context.read<FeedCubit>(),
-                      child: CreatePostScreen(),
+                      child: BlocProvider(
+                        create: (context) => CreatePostCubit(context.read<FeedCubit>().repository),
+                        child: CreatePostScreen(),
+                  
+                      ),
                     );
                   },
                 ),
