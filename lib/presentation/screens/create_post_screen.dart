@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_threads/presentation/bloc/create_post/create_post_cubit.dart';
@@ -57,6 +59,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           body: Padding(
             padding: EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -70,12 +73,46 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           hintText: 'Что нового?',
                           border: InputBorder.none,
                         ),
+                        onChanged: (value) {
+                          cubit.contentChanged(value);
+                        },
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 40),
 
+                if (state.imagePath != null) ...[
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(
+                          File(state.imagePath!),
+                          width: double.infinity,
+                          height: 220,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: GestureDetector(
+                          onTap: cubit.removeImage,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.close),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                const SizedBox(height: 30),
                 GestureDetector(
                   onTap: () {
                     cubit.pickFromGallery();
@@ -83,7 +120,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   child: Icon(
                     Icons.photo_outlined,
                     size: 22,
-
                     color: Colors.grey.shade600,
                   ),
                 ),
