@@ -24,6 +24,7 @@ class CommentTile extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [

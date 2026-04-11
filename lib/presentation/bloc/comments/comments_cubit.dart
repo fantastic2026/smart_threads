@@ -48,10 +48,13 @@ class CommentsCubit extends Cubit<CommentsState> {
           comment: [...state.comment, comment],
         ),
       );
-    } catch (e) {
+      print('success');
+    } catch (e, s) {
+      print('error $s');
       await loadComments();
     }
   }
 
   //input changed
+  void inputChanged(String value) => emit(state.copyWith(inputText: value));
 }

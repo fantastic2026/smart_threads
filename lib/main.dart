@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:smart_threads/data/datasourses/local_post_datasource.dart';
+import 'package:smart_threads/data/models/comment_model.dart';
 import 'package:smart_threads/data/models/post_model.dart';
 import 'package:smart_threads/data/respositories/post_repository_impl.dart';
 import 'package:smart_threads/domain/entities/post.dart';
@@ -14,6 +15,7 @@ Future<void> main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(PostModelAdapter());
+  Hive.registerAdapter(CommentModelAdapter());
 
   await _seedIfEmpty();
 
@@ -23,7 +25,7 @@ Future<void> main() async {
 Future<void> _seedIfEmpty() async {
   final box = await Hive.openBox<PostModel>('posts');
   print('object');
- // if (box.isNotEmpty) return;
+  // if (box.isNotEmpty) return;
   print('object1');
 
   final posts = [
