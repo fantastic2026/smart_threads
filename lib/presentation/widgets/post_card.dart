@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_threads/domain/entities/post.dart';
 import 'package:smart_threads/presentation/screens/comments_screen.dart';
+import 'package:smart_threads/presentation/screens/profile_screen.dart';
 import 'package:smart_threads/presentation/widgets/like_button.dart';
 
 class PostCard extends StatelessWidget {
@@ -15,7 +16,15 @@ class PostCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(radius: 20, child: Icon(Icons.person)),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                ProfileScreen.route(context, post.authorId),
+              );
+            },
+            child: CircleAvatar(radius: 20, child: Icon(Icons.person)),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
