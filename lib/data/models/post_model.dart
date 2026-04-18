@@ -13,11 +13,11 @@ abstract class PostModel with _$PostModel {
   const factory PostModel({
     @HiveField(0) required String id,
     @HiveField(1) required String content,
-    @HiveField(2) required String authorId,
-    @HiveField(3) required String createdAt,
+    @HiveField(2) @JsonKey(name: 'author_id') required String authorId,
+    @HiveField(3) @JsonKey(name: 'created_at') required String createdAt,
     @HiveField(4) required int likes,
-    @HiveField(5) @Default(false) bool isLiked,
-    @HiveField(6) String? imageUrl
+    @HiveField(5) @JsonKey(name: 'is_liked') @Default(false) bool isLiked,
+    @HiveField(6) @JsonKey(name: 'image_url') String? imageUrl
   }) = _PostModel;
 
   factory PostModel.fromJson(Map<String, dynamic> json) =>

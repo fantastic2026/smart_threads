@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_threads/data/datasourses/local_comment_data_source.dart';
-import 'package:smart_threads/data/respositories/comment_repository_impl.dart';
+import 'package:smart_threads/data/repositories/comment_repository_impl.dart';
 import 'package:smart_threads/domain/entities/post.dart';
+import 'package:smart_threads/domain/repositories/comment_repository.dart';
+import 'package:smart_threads/injection.dart';
 import 'package:smart_threads/presentation/bloc/comments/comments_cubit.dart';
 import 'package:smart_threads/presentation/bloc/comments/comments_state.dart';
 import 'package:smart_threads/presentation/widgets/comment_input.dart';
@@ -18,10 +20,8 @@ class CommentsScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return BlocProvider(
-          create: (context) => CommentsCubit(
-            CommentRepositoryImpl(LocalCommentDataSource()),
-            post.id,
-          ),
+          create: (context) =>
+              CommentsCubit(locator<CommentRepository>(), post.id),
           child: CommentsScreen(post: post),
         );
       },
