@@ -32,7 +32,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           Navigator.pop(context);
         }
 
-        if (state.status == CreatePostStatus.error) {
+        if (state.status == CreatePostStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage ?? 'Ошибка дефолт')),
           );
@@ -82,13 +82,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 ),
                 const SizedBox(height: 40),
 
-                if (state.imagePath != null) ...[
+                if (state.imageUrl != null) ...[
                   Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.file(
-                          File(state.imagePath!),
+                          File(state.imageUrl!),
                           width: double.infinity,
                           height: 220,
                           fit: BoxFit.cover,

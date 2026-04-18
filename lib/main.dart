@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'package:smart_threads/data/datasourses/local_post_datasource.dart';
 import 'package:smart_threads/data/models/comment_model.dart';
 import 'package:smart_threads/data/models/post_model.dart';
-import 'package:smart_threads/data/repositories/post_repository_impl.dart';
 import 'package:smart_threads/domain/entities/post.dart';
+import 'package:smart_threads/domain/repositories/auth_repository.dart';
 import 'package:smart_threads/domain/repositories/post_repository.dart';
 import 'package:smart_threads/injection.dart';
+import 'package:smart_threads/presentation/bloc/auth/auth_cubit.dart';
 import 'package:smart_threads/presentation/bloc/feed_cubit/feed_cubit.dart';
-import 'package:smart_threads/presentation/screens/feed_screen.dart';
+import 'package:smart_threads/presentation/widgets/auth_wrapper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,50 +24,47 @@ Future<void> main() async {
   );
 
   await Hive.initFlutter();
-
   Hive.registerAdapter(PostModelAdapter());
   Hive.registerAdapter(CommentModelAdapter());
-
-  await _seedIfEmpty();
+  await _seedData();
 
   await setupDependencies();
 
   runApp(const MyApp());
 }
 
-Future<void> _seedIfEmpty() async {
+Future<void> _seedData() async {
   final box = await Hive.openBox<PostModel>('posts');
-  print('object');
-  // if (box.isNotEmpty) return;
-  print('object1');
 
   final posts = [
     Post(
       id: '1',
-      content: 'Coffee was great!',
-      authorId: 'alex',
-      createdAt: '',
-      likes: 5,
+      content: 'Красивый день в Астана!',
+      authorId: '1',
+      createdAt: DateTime.now().toString(),
+      likes: 3,
     ),
     Post(
       id: '2',
-      content: 'Had a great day!',
-      authorId: 'aigerim',
-      createdAt: '',
-      likes: 5,
+      content: 'Workng on my Flutter project!',
+      authorId: '2',
+      createdAt: DateTime.now().toString(),
+      likes: 6,
     ),
     Post(
       id: '3',
-      content: 'Developing Flutter app',
-      authorId: 'marat',
-      createdAt: '',
-      likes: 5,
+      content: 'Знакомьтесь, это мой новый пост!',
+      authorId: '3',
+      createdAt: DateTime.now().toString(),
+      likes: 9,
     ),
   ];
 
-  await box.put(posts[0].id, PostModel.fromEntity(posts[0]));
-  await box.put(posts[1].id, PostModel.fromEntity(posts[1]));
-  await box.put(posts[2].id, PostModel.fromEntity(posts[2]));
+  await box.putAll(
+    posts.asMap().map(
+      (key, post) => MapEntry(post.id, PostModel.fromEntity(post)),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -75,12 +72,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FeedCubit(locator<PostRepository>())..loadFeed(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AuthCubit(locator<AuthRepository>())..checkAuth()),
+        BlocProvider(create: (_) => FeedCubit(locator<PostRepository>())),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-        home: const FeedScreen(),
+        home: const AuthWrapper(),
       ),
     );
   }

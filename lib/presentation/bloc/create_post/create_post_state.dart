@@ -2,14 +2,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'create_post_state.freezed.dart';
 
-enum CreatePostStatus { initial, loading, success, error }
+enum CreatePostStatus { initial, loading, success, failure }
 
 @freezed
 abstract class CreatePostState with _$CreatePostState {
   const factory CreatePostState({
     @Default(CreatePostStatus.initial) CreatePostStatus status,
     @Default('') String content,
-    String? imagePath,
+    String? imageUrl,
     String? errorMessage,
   }) = _CreatePostState;
 
