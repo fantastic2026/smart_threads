@@ -50,7 +50,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
       id: DateTime.now().millisecond.toString(),
       content: state.content.trim(),
       authorId: currentUser!.id,
-      createdAt: '',
+      createdAt: DateTime.now().toIso8601String(),
       likes: 0,
       imageUrl: state.imageUrl,
     );
