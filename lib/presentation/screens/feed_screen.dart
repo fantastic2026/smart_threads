@@ -41,7 +41,11 @@ class FeedScreen extends StatelessWidget {
                     );
                   },
                 ),
-              );
+              ).then((_) {
+                if (context.mounted) {
+                  context.read<FeedCubit>().loadFeed();
+                }
+              });
             },
             icon: Icon(Icons.edit_outlined),
           ),
