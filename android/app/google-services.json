@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "469072988532",
+    "project_id": "smart-threads-860de",
+    "storage_bucket": "smart-threads-860de.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469072988532:android:2af9113fd60bf34b524421",
+        "android_client_info": {
+          "package_name": "com.example.smart_threads"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt2Eju-EtNR2t3RMw2QbJElAzhg0T9mgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -6,6 +8,7 @@ import 'package:smart_threads/data/models/post_model.dart';
 import 'package:smart_threads/domain/entities/post.dart';
 import 'package:smart_threads/domain/repositories/auth_repository.dart';
 import 'package:smart_threads/domain/repositories/post_repository.dart';
+import 'package:smart_threads/firebase_options.dart';
 import 'package:smart_threads/injection.dart';
 import 'package:smart_threads/presentation/bloc/auth/auth_cubit.dart';
 import 'package:smart_threads/presentation/bloc/feed_cubit/feed_cubit.dart';
@@ -13,8 +16,18 @@ import 'package:smart_threads/presentation/widgets/auth_wrapper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBgHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print('Background message: ${message.notification?.title}');
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBgHandler);
 
   await dotenv.load(fileName: '.env');
 
@@ -74,7 +87,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => AuthCubit(locator<AuthRepository>())..checkAuth()),
+        BlocProvider(
+          create: (_) => AuthCubit(locator<AuthRepository>())..checkAuth(),
+        ),
         BlocProvider(create: (_) => FeedCubit(locator<PostRepository>())),
       ],
       child: MaterialApp(
